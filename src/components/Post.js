@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardHeader,
   CardBody,
@@ -7,7 +8,6 @@ import {
   Text,
   Flex,
   Avatar,
-  Box,
   Stack,
   Button,
   Icon,
@@ -17,8 +17,11 @@ import {
   Show,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addReaction, removeReaction } from "../features/postsSlice";
 import { AtSignIcon, ChatIcon } from "@chakra-ui/icons";
 import { TbCat } from "react-icons/tb";
+import Comments from "./Comments";
 
 function randomBadgeColor() {
   const colors = [
@@ -72,8 +75,22 @@ function Header({ user }) {
 }
 
 function Body({ post }) {
+  const dispatch = useDispatch();
   const [excerpt, setExcerpt] = useState(true);
+  const [commentsOpen, setCommentsOpen] = useState(false);
   const [badgeColors, setBadgeColors] = useState([]);
+
+  const handleReaction = () => {
+    if (post.reacted) {
+      dispatch(removeReaction(post.id));
+    } else {
+      dispatch(addReaction(post.id));
+    }
+  };
+
+  const handleComments = () => {
+    setCommentsOpen(!commentsOpen);
+  };
 
   useEffect(() => {
     setBadgeColors(post.tags.map(() => randomBadgeColor()));
@@ -94,7 +111,7 @@ function Body({ post }) {
       </Stack>
       <Text
         mt="3"
-        fontSize={["sm", "md"]}
+        fontSize="md"
         noOfLines={excerpt ? 3 : 0}
         onClick={() => setExcerpt(false)}
       >
@@ -107,24 +124,29 @@ function Body({ post }) {
         mt={[4, 5]}
       >
         <Button
-          leftIcon={<Icon boxSize="1.25em" as={TbCat} />}
-          colorScheme="red"
-          variant="ghost"
+          leftIcon={<Icon mb="0.5" boxSize="1.25em" as={TbCat} />}
+          colorScheme={post.reacted ? "red" : "gray"}
+          variant="outline"
           flex={[1, "none"]}
           isActive={true}
+          onClick={handleReaction}
         >
           {post.reactions}
         </Button>
         <Button
-          leftIcon={<ChatIcon />}
-          colorScheme="gray"
-          variant="ghost"
+          leftIcon={<ChatIcon mb="0.5" />}
+          colorScheme={commentsOpen ? "red" : "gray"}
+          variant="outline"
           flex={[1, "none"]}
-          isActive={false}
+          isActive={true}
+          onClick={handleComments}
         >
-          0
+          {post.comments ? post.comments.length : 0}
         </Button>
       </Stack>
+      {commentsOpen && post.comments && (
+        <Comments postId={post.id} comments={post.comments} />
+      )}
     </CardBody>
   );
 }

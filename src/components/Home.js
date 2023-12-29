@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getPosts } from "../features/postsSlice";
 import Alert from "./Alert";
-import { Container, Heading, Stack } from "@chakra-ui/react";
+import { Container, Box, Heading, Stack, Button } from "@chakra-ui/react";
 
 import Post from "./Post";
 
@@ -10,10 +10,16 @@ function Home() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
   const posts = useSelector((state) => state.posts);
+  const [postsLoading, setPostsLoading] = useState(false);
 
   useEffect(() => {
-    dispatch(getPosts(3));
+    dispatch(getPosts());
   }, [dispatch]);
+
+  const handleLoadPosts = () => {
+    setPostsLoading(true);
+    dispatch(getPosts()).then(() => setPostsLoading(false));
+  };
 
   return (
     <Container maxW="container.sm">
@@ -40,15 +46,30 @@ function Home() {
         />
       )}
       {!users.error && !posts.error && (
-        <Stack spacing={[8, 12]} mb={[8, 12]}>
-          {posts.data.map((post) => (
-            <Post
-              key={post.id}
-              post={post}
-              user={users.data.find((user) => user.id === post.userId)}
-            />
-          ))}
-        </Stack>
+        <Box mb={[8, 12]}>
+          <Stack spacing={[8, 12]}>
+            {posts.data.map((post) => (
+              <Post
+                key={post.id}
+                post={post}
+                user={users.data.find((user) => user.id === post.userId)}
+              />
+            ))}
+          </Stack>
+          <Button
+            colorScheme="red"
+            size="md"
+            w="100%"
+            variant="outline"
+            isLoading={postsLoading}
+            loadingText="Loading"
+            spinnerPlacement="start"
+            mt={[8, 12]}
+            onClick={handleLoadPosts}
+          >
+            Load more
+          </Button>
+        </Box>
       )}
     </Container>
   );

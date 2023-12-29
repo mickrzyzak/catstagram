@@ -5,16 +5,19 @@ const url = "https://dummyjson.com/posts";
 
 export const getPosts = createAsyncThunk(
   "posts/getPosts",
-  async (limit = 5, thunkAPI) => {
+  async (limit = 3, thunkAPI) => {
     const state = thunkAPI.getState();
 
-    // Fetch new posts
+    // Fetch posts
     const skip = state.posts.data.length;
     const response = await fetch(`${url}?skip=${skip}&limit=${limit}`)
       .then((response) => response.json())
       .then((data) => data);
 
-    // Fetch connected users
+    // Fetch comments
+    response.posts.forEach((post) => thunkAPI.dispatch(getComments(post.id)));
+
+    // Fetch users
     response.posts.forEach((post) =>
       state.users.data.findIndex((user) => user.id === post.userId) === -1
         ? thunkAPI.dispatch(getUser(post.userId))
@@ -25,6 +28,17 @@ export const getPosts = createAsyncThunk(
   }
 );
 
+export const getComments = createAsyncThunk(
+  "posts/getComments",
+  async (postId) => {
+    const response = await fetch(`${url}/${postId}/comments`)
+      .then((response) => response.json())
+      .then((data) => data);
+
+    return { postId, comments: response.comments };
+  }
+);
+
 const initialState = {
   data: [],
 };
@@ -32,8 +46,29 @@ const initialState = {
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    addReaction(state, action) {
+      let post = state.data.find((post) => post.id === action.payload);
+      post.reactions++;
+      post.reacted = true;
+    },
+    removeReaction(state, action) {
+      let post = state.data.find((post) => post.id === action.payload);
+      post.reactions--;
+      post.reacted = false;
+    },
+    addComment(state, action) {
+      let post = state.data.find((post) => post.id === action.payload.postId);
+      post.comments.push({
+        id: Date.now(),
+        body: action.payload.content,
+        postId: action.payload.postId,
+        user: { username: "You" },
+      });
+    },
+  },
   extraReducers: (builder) => {
+    // Get posts
     builder.addCase(getPosts.fulfilled, (state, action) => {
       state.data = state.data.concat(action.payload);
     });
@@ -43,9 +78,20 @@ export const postsSlice = createSlice({
         description: "Please try again later.",
       };
     });
+    // Get comments
+    builder.addCase(getComments.fulfilled, (state, action) => {
+      let post = state.data.find((post) => post.id === action.payload.postId);
+      post.comments = action.payload.comments;
+    });
+    builder.addCase(getComments.rejected, (state, action) => {
+      state.error = {
+        title: "Cannot load data from API.",
+        description: "Please try again later.",
+      };
+    });
   },
 });
 
-//export const {} = postsSlice.actions;
+export const { addReaction, removeReaction, addComment } = postsSlice.actions;
 
 export default postsSlice.reducer;
