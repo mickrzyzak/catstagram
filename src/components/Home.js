@@ -3,23 +3,69 @@ import { useSelector, useDispatch } from "react-redux";
 import { getPosts } from "../features/postsSlice";
 import Alert from "./Alert";
 import { Container, Box, Heading, Stack, Button } from "@chakra-ui/react";
-
 import Post from "./Post";
 
-function Home() {
+function Posts({ posts, users, photos }) {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.users);
-  const posts = useSelector((state) => state.posts);
   const [postsLoading, setPostsLoading] = useState(false);
-
-  useEffect(() => {
-    dispatch(getPosts());
-  }, [dispatch]);
 
   const handleLoadPosts = () => {
     setPostsLoading(true);
     dispatch(getPosts()).then(() => setPostsLoading(false));
   };
+
+  return (
+    <Box mb={[8, 12]}>
+      <Stack spacing={[8, 12]}>
+        {posts.data.map((post) => (
+          <Post
+            key={post.id}
+            post={post}
+            user={users.data.find((user) => user.id === post.userId)}
+            photo={photos.data.find((photo) => photo.postId === post.id)}
+          />
+        ))}
+      </Stack>
+      <Button
+        colorScheme="red"
+        size="md"
+        w="100%"
+        variant="outline"
+        bgColor="white"
+        boxShadow="md"
+        mt={[8, 12]}
+        isLoading={postsLoading}
+        loadingText="Loading"
+        spinnerPlacement="start"
+        onClick={handleLoadPosts}
+      >
+        Load more
+      </Button>
+    </Box>
+  );
+}
+
+function Home() {
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users);
+  const posts = useSelector((state) => state.posts);
+  const photos = useSelector((state) => state.photos);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    [users, posts, photos].every((data) => {
+      if (!data.error) return true;
+      setError({
+        title: data.error.title,
+        description: data.error.description,
+      });
+      return false;
+    });
+  }, [users, posts, photos]);
 
   return (
     <Container maxW="container.sm">
@@ -31,45 +77,14 @@ function Home() {
       >
         For you, meow
       </Heading>
-      {users.error && (
+      {error ? (
         <Alert
           status="error"
-          title={users.error.title}
-          description={users.error.description}
+          title={error.title}
+          description={error.description}
         />
-      )}
-      {posts.error && (
-        <Alert
-          status="error"
-          title={posts.error.title}
-          description={posts.error.description}
-        />
-      )}
-      {!users.error && !posts.error && (
-        <Box mb={[8, 12]}>
-          <Stack spacing={[8, 12]}>
-            {posts.data.map((post) => (
-              <Post
-                key={post.id}
-                post={post}
-                user={users.data.find((user) => user.id === post.userId)}
-              />
-            ))}
-          </Stack>
-          <Button
-            colorScheme="red"
-            size="md"
-            w="100%"
-            variant="outline"
-            isLoading={postsLoading}
-            loadingText="Loading"
-            spinnerPlacement="start"
-            mt={[8, 12]}
-            onClick={handleLoadPosts}
-          >
-            Load more
-          </Button>
-        </Box>
+      ) : (
+        <Posts posts={posts} users={users} photos={photos} />
       )}
     </Container>
   );

@@ -3,7 +3,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const url = "https://dummyjson.com/users";
 
 export const getUser = createAsyncThunk("users/getUser", async (id) => {
-  const response = await fetch(`${url}/${id}`)
+  const response = await fetch(
+    `${url}/${id}?select=id,firstName,lastName,username,image,address`
+  )
     .then((response) => response.json())
     .then((data) => data);
 

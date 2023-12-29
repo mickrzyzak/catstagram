@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUser } from "../features/usersSlice";
+import { getPhotos } from "../features/photosSlice";
 
 const url = "https://dummyjson.com/posts";
 
@@ -22,6 +23,11 @@ export const getPosts = createAsyncThunk(
       state.users.data.findIndex((user) => user.id === post.userId) === -1
         ? thunkAPI.dispatch(getUser(post.userId))
         : false
+    );
+
+    // Fetch photos
+    thunkAPI.dispatch(
+      getPhotos({ limit, postIds: response.posts.map((post) => post.id) })
     );
 
     return response.posts;

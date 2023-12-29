@@ -12,6 +12,7 @@ import {
   Button,
   Icon,
   Divider,
+  Skeleton,
   SkeletonText,
   Badge,
   Show,
@@ -40,7 +41,7 @@ function randomBadgeColor() {
 
 function Header({ user }) {
   return (
-    <CardHeader px={[3, 5]}>
+    <CardHeader px={[3, 5]} py={[3, 4]}>
       <Flex gap="4" alignItems="center">
         <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
           <Avatar
@@ -74,7 +75,7 @@ function Header({ user }) {
   );
 }
 
-function Body({ post }) {
+function Body({ post, photo }) {
   const dispatch = useDispatch();
   const [excerpt, setExcerpt] = useState(true);
   const [commentsOpen, setCommentsOpen] = useState(false);
@@ -99,8 +100,12 @@ function Body({ post }) {
   return (
     <CardBody px={[3, 5]}>
       <Image
-        src="https://cdn2.thecatapi.com/images/MTgwMTIzMA.jpg"
-        alt="Cute Kitty"
+        w="100%"
+        maxH="50vh"
+        objectFit="cover"
+        fallback={<Skeleton w="100%" h="25vh" />}
+        src={photo.url}
+        alt={photo.id}
       />
       <Stack direction="row" wrap="wrap" mt={[4, 5]}>
         {post.tags.map((tag, index) => (
@@ -151,15 +156,15 @@ function Body({ post }) {
   );
 }
 
-function Post({ post, user }) {
-  if (!post || !user)
+function Post({ post, user, photo }) {
+  if (!post || !user || !photo)
     return <SkeletonText noOfLines={5} spacing="4" skeletonHeight="2" />;
 
   return (
     <Card variant="elevated" boxShadow="md">
       <Header user={user} />
       <Divider color="red.600" variant="dashed" />
-      <Body post={post} />
+      <Body post={post} photo={photo} />
     </Card>
   );
 }
