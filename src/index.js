@@ -10,8 +10,13 @@ const theme = extendTheme({
   styles: {
     global: () => ({
       body: {
+        position: "relative",
         bg: "gray.100",
         bgGradient: ["none", "linear(to-r, gray.200, gray.100)"],
+        paddingTop: ["67px", "72px"],
+        paddingBottom: ["104px", "113px"],
+        minW: "320px",
+        minH: "100vh",
       },
     }),
   },

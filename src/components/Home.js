@@ -2,20 +2,24 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getPosts } from "../features/postsSlice";
 import Alert from "./Alert";
-import { Container, Box, Heading, Stack, Button } from "@chakra-ui/react";
+import { Container, Box, Stack, Button } from "@chakra-ui/react";
 import Post from "./Post";
 
 function Posts({ posts, users, photos }) {
   const dispatch = useDispatch();
-  const [postsLoading, setPostsLoading] = useState(false);
+  const [postsLoading, setPostsLoading] = useState(true);
 
   const handleLoadPosts = () => {
     setPostsLoading(true);
     dispatch(getPosts()).then(() => setPostsLoading(false));
   };
 
+  useEffect(() => {
+    if (photos.data.length > 0) setPostsLoading(false);
+  }, [photos]);
+
   return (
-    <Box mb={[8, 12]}>
+    <Box my={[8, 12]}>
       <Stack spacing={[8, 12]}>
         {posts.data.map((post) => (
           <Post
@@ -32,7 +36,7 @@ function Posts({ posts, users, photos }) {
         w="100%"
         variant="outline"
         bgColor="white"
-        boxShadow="md"
+        boxShadow="base"
         mt={[8, 12]}
         isLoading={postsLoading}
         loadingText="Loading"
@@ -69,14 +73,6 @@ function Home() {
 
   return (
     <Container maxW="container.sm">
-      <Heading
-        size="lg"
-        color="gray.600"
-        textAlign={["center", "left"]}
-        my={[6, 8]}
-      >
-        For you, meow
-      </Heading>
       {error ? (
         <Alert
           status="error"

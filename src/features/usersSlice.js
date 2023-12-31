@@ -3,9 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const url = "https://dummyjson.com/users";
 
 export const getUser = createAsyncThunk("users/getUser", async (id) => {
-  const response = await fetch(
-    `${url}/${id}?select=id,firstName,lastName,username,image,address`
-  )
+  const response = await fetch(`${url}/${id}`)
     .then((response) => response.json())
     .then((data) => data);
 
@@ -22,7 +20,8 @@ export const usersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getUser.fulfilled, (state, action) => {
-      state.data.push(action.payload);
+      if (state.data.findIndex((user) => user.id === action.payload.id) === -1)
+        state.data.push(action.payload);
     });
     builder.addCase(getUser.rejected, (state, action) => {
       state.error = {

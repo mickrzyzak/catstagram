@@ -1,4 +1,5 @@
 import {
+  AspectRatio,
   Box,
   Card,
   CardHeader,
@@ -62,9 +63,9 @@ function Header({ user }) {
         </Flex>
         <Show above="sm">
           <Button
-            leftIcon={<AtSignIcon />}
+            leftIcon={<AtSignIcon boxSize="4" />}
             colorScheme="red"
-            variant="outline"
+            variant="ghost"
             size="sm"
           >
             View profile
@@ -103,7 +104,11 @@ function Body({ post, photo }) {
         w="100%"
         maxH="50vh"
         objectFit="cover"
-        fallback={<Skeleton w="100%" h="25vh" />}
+        fallback={
+          <AspectRatio ratio={16 / 9}>
+            <Skeleton />
+          </AspectRatio>
+        }
         src={photo.url}
         alt={photo.id}
       />
@@ -161,7 +166,7 @@ function Post({ post, user, photo }) {
     return <SkeletonText noOfLines={5} spacing="4" skeletonHeight="2" />;
 
   return (
-    <Card variant="elevated" boxShadow="md">
+    <Card variant="elevated" boxShadow="base">
       <Header user={user} />
       <Divider color="red.600" variant="dashed" />
       <Body post={post} photo={photo} />

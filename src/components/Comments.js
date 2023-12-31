@@ -6,13 +6,14 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { addComment } from "../features/postsSlice";
 import { EditIcon } from "@chakra-ui/icons";
 
 function Comments({ postId, comments }) {
   const dispatch = useDispatch();
+  const commentInput = useRef(null);
   const [comment, setComment] = useState("");
 
   const handleAddComment = (e) => {
@@ -21,6 +22,7 @@ function Comments({ postId, comments }) {
 
     dispatch(addComment({ postId, content: comment }));
     setComment("");
+    commentInput.current.blur();
   };
 
   return (
@@ -48,6 +50,7 @@ function Comments({ postId, comments }) {
             minLength="1"
             maxLength="100"
             value={comment}
+            ref={commentInput}
             onChange={(e) => setComment(e.target.value)}
           />
         </InputGroup>

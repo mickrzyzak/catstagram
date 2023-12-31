@@ -19,11 +19,7 @@ export const getPosts = createAsyncThunk(
     response.posts.forEach((post) => thunkAPI.dispatch(getComments(post.id)));
 
     // Fetch users
-    response.posts.forEach((post) =>
-      state.users.data.findIndex((user) => user.id === post.userId) === -1
-        ? thunkAPI.dispatch(getUser(post.userId))
-        : false
-    );
+    response.posts.forEach((post) => thunkAPI.dispatch(getUser(post.userId)));
 
     // Fetch photos
     thunkAPI.dispatch(

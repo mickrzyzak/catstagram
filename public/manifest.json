@@ -1,6 +1,7 @@
 {
   "short_name": "Catstagram",
   "name": "Catstagram",
+  "description": "Space for your cat",
   "icons": [
     {
       "src": "favicon.ico",
