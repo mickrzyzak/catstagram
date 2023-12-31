@@ -2,52 +2,8 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getPosts } from "../features/postsSlice";
 import Alert from "./Alert";
-import { Container, Box, Stack, Button } from "@chakra-ui/react";
-import Post from "./Post";
-
-function Posts({ posts, users, photos }) {
-  const dispatch = useDispatch();
-  const [postsLoading, setPostsLoading] = useState(true);
-
-  const handleLoadPosts = () => {
-    setPostsLoading(true);
-    dispatch(getPosts()).then(() => setPostsLoading(false));
-  };
-
-  useEffect(() => {
-    if (photos.data.length > 0) setPostsLoading(false);
-  }, [photos]);
-
-  return (
-    <Box my={[8, 12]}>
-      <Stack spacing={[8, 12]}>
-        {posts.data.map((post) => (
-          <Post
-            key={post.id}
-            post={post}
-            user={users.data.find((user) => user.id === post.userId)}
-            photo={photos.data.find((photo) => photo.postId === post.id)}
-          />
-        ))}
-      </Stack>
-      <Button
-        colorScheme="red"
-        size="md"
-        w="100%"
-        variant="outline"
-        bgColor="white"
-        boxShadow="base"
-        mt={[8, 12]}
-        isLoading={postsLoading}
-        loadingText="Loading"
-        spinnerPlacement="start"
-        onClick={handleLoadPosts}
-      >
-        Load more
-      </Button>
-    </Box>
-  );
-}
+import { Container } from "@chakra-ui/react";
+import Posts from "./Posts";
 
 function Home() {
   const dispatch = useDispatch();
@@ -57,8 +13,9 @@ function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (posts.data.length) return;
     dispatch(getPosts());
-  }, [dispatch]);
+  }, [dispatch, posts.data.length]);
 
   useEffect(() => {
     [users, posts, photos].every((data) => {
@@ -72,7 +29,7 @@ function Home() {
   }, [users, posts, photos]);
 
   return (
-    <Container maxW="container.sm">
+    <Container maxW="container.sm" px={[0, 4]}>
       {error ? (
         <Alert
           status="error"

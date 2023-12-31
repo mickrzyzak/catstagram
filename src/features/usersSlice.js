@@ -25,8 +25,8 @@ export const usersSlice = createSlice({
     });
     builder.addCase(getUser.rejected, (state, action) => {
       state.error = {
-        title: "Cannot load data from API.",
-        description: "Please try again later.",
+        title: "Cannot load data from API",
+        description: "Please try again later",
       };
     });
   },

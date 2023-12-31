@@ -14,6 +14,7 @@ import {
 import { useState, useEffect } from "react";
 import { AtSignIcon, RepeatIcon } from "@chakra-ui/icons";
 import { FaCat } from "react-icons/fa";
+import NavLink from "./NavLink";
 
 function Navbar() {
   const [condensed, setCondensed] = useState(false);
@@ -29,7 +30,7 @@ function Navbar() {
 
   return (
     <Box
-      py={condensed ? 2 : [(4, 5)]}
+      py={condensed ? 2 : [4, 5]}
       bgColor="white"
       position="fixed"
       top="0"
@@ -41,15 +42,17 @@ function Navbar() {
       borderStyle="dashed"
       boxShadow="base"
     >
-      <Container maxW="container.md">
+      <Container maxW="container.md" px={[3, 5]}>
         <Stack direction="row" justifyContent="space-between">
-          <Heading fontSize="2xl" as="h1" color="red.600">
-            <Icon as={FaCat} color="red.600" mr="2" />
-            Cats
-            <Text color="gray.600" display="inline">
-              tagram
-            </Text>
-          </Heading>
+          <NavLink to="/" _hover={{ textDecoration: "none" }}>
+            <Heading fontSize="2xl" as="h1" color="red.600">
+              <Icon as={FaCat} color="red.600" mr="2" />
+              Cats
+              <Text color="gray.600" display="inline">
+                tagram
+              </Text>
+            </Heading>
+          </NavLink>
           <Menu>
             <MenuButton
               as={Button}

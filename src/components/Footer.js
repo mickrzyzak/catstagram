@@ -11,7 +11,7 @@ function FooterText({ children }) {
 function Footer() {
   return (
     <Box
-      py={[(4, 5)]}
+      py={[4, 5]}
       bgColor="white"
       position="absolute"
       bottom="0"
@@ -23,7 +23,7 @@ function Footer() {
       borderStyle="dashed"
       boxShadow="base"
     >
-      <Container maxW="container.md" textAlign={["center", "left"]}>
+      <Container maxW="container.md" textAlign={["center", "left"]} px={[3, 5]}>
         <FooterText>
           Application created by{" "}
           <Link

@@ -5,6 +5,7 @@ import "./index.css";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { store } from "./store";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 
 const theme = extendTheme({
   styles: {
@@ -13,8 +14,8 @@ const theme = extendTheme({
         position: "relative",
         bg: "gray.100",
         bgGradient: ["none", "linear(to-r, gray.200, gray.100)"],
-        paddingTop: ["67px", "72px"],
-        paddingBottom: ["104px", "113px"],
+        paddingTop: ["66px", "73px"],
+        paddingBottom: ["96px", "113px"],
         minW: "320px",
         minH: "100vh",
       },
@@ -27,7 +28,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <ChakraProvider theme={theme}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ChakraProvider>
   </Provider>
 );
