@@ -9,7 +9,7 @@ function Post({ post, user, photo }) {
     );
 
   return (
-    <Card variant="elevated" boxShadow="base" borderRadius={[0, 7]}>
+    <Card variant="elevated" boxShadow="base" borderRadius={["none", "md"]}>
       <PostHeader user={user} />
       <Divider color="red.600" variant="dashed" />
       <PostBody post={post} photo={photo} />

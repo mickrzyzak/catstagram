@@ -2,13 +2,21 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const url = "https://dummyjson.com/users";
 
-export const getUser = createAsyncThunk("users/getUser", async (id) => {
-  const response = await fetch(`${url}/${id}`)
-    .then((response) => response.json())
-    .then((data) => data);
+export const getUser = createAsyncThunk(
+  "users/getUser",
+  async (id, thunkAPI) => {
+    const state = thunkAPI.getState();
 
-  return response;
-});
+    if (state.users.data.findIndex((user) => id === user.id) !== -1)
+      return null;
+
+    const response = await fetch(`${url}/${id}`)
+      .then((response) => response.json())
+      .then((data) => data);
+
+    return response;
+  }
+);
 
 const initialState = {
   data: [],
@@ -20,8 +28,8 @@ export const usersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getUser.fulfilled, (state, action) => {
-      if (state.data.findIndex((user) => user.id === action.payload.id) === -1)
-        state.data.push(action.payload);
+      if (action.payload === null) return;
+      state.data.push(action.payload);
     });
     builder.addCase(getUser.rejected, (state, action) => {
       state.error = {

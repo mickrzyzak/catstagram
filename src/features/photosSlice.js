@@ -6,9 +6,18 @@ const apiKey =
 
 export const getPhotos = createAsyncThunk(
   "photos/getPhotos",
-  async ({ limit, postIds }) => {
+  async (postIds, thunkAPI) => {
+    const state = thunkAPI.getState();
+
+    postIds = postIds.filter(
+      (postId) =>
+        state.photos.data.findIndex((photo) => photo.postId === postId) === -1
+    );
+
+    if (postIds.length === 0) return null;
+
     const response = await fetch(
-      `${url}?limit=${limit}&mime_types=jpg,png&size=full&api_key=${apiKey}`
+      `${url}?limit=${postIds.length}&mime_types=jpg,png&size=full&api_key=${apiKey}`
     )
       .then((response) => response.json())
       .then((data) => data);
@@ -30,6 +39,7 @@ export const photosSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getPhotos.fulfilled, (state, action) => {
+      if (action.payload === null) return;
       state.data = state.data.concat(action.payload);
     });
     builder.addCase(getPhotos.rejected, (state, action) => {

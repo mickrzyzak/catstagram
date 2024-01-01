@@ -10,10 +10,14 @@ export const getPosts = createAsyncThunk(
     const state = thunkAPI.getState();
 
     // Fetch posts
-    const skip = state.posts.data.length;
+    const skip = state.posts.count;
     const response = await fetch(`${url}?skip=${skip}&limit=${limit}`)
       .then((response) => response.json())
       .then((data) => data);
+    response.posts = response.posts.filter(
+      (post) =>
+        state.posts.data.findIndex((post1) => post.id === post1.id) === -1
+    );
 
     // Fetch comments
     response.posts.forEach((post) => thunkAPI.dispatch(getComments(post.id)));
@@ -22,9 +26,31 @@ export const getPosts = createAsyncThunk(
     response.posts.forEach((post) => thunkAPI.dispatch(getUser(post.userId)));
 
     // Fetch photos
-    thunkAPI.dispatch(
-      getPhotos({ limit, postIds: response.posts.map((post) => post.id) })
+    thunkAPI.dispatch(getPhotos(response.posts.map((post) => post.id)));
+
+    return { posts: response.posts, count: limit };
+  }
+);
+
+export const getUserPosts = createAsyncThunk(
+  "posts/getUserPosts",
+  async (userId, thunkAPI) => {
+    const state = thunkAPI.getState();
+
+    // Fetch posts
+    const response = await fetch(`${url}/user/${userId}`)
+      .then((response) => response.json())
+      .then((data) => data);
+    response.posts = response.posts.filter(
+      (post) =>
+        state.posts.data.findIndex((post1) => post.id === post1.id) === -1
     );
+
+    // Fetch comments
+    response.posts.forEach((post) => thunkAPI.dispatch(getComments(post.id)));
+
+    // Fetch photos
+    thunkAPI.dispatch(getPhotos(response.posts.map((post) => post.id)));
 
     return response.posts;
   }
@@ -43,6 +69,7 @@ export const getComments = createAsyncThunk(
 
 const initialState = {
   data: [],
+  count: 0,
 };
 
 export const postsSlice = createSlice({
@@ -72,9 +99,20 @@ export const postsSlice = createSlice({
   extraReducers: (builder) => {
     // Get posts
     builder.addCase(getPosts.fulfilled, (state, action) => {
-      state.data = state.data.concat(action.payload);
+      state.count += action.payload.count;
+      state.data = state.data.concat(action.payload.posts);
     });
     builder.addCase(getPosts.rejected, (state, action) => {
+      state.error = {
+        title: "Cannot load data from API",
+        description: "Please try again later",
+      };
+    });
+    // Get user posts
+    builder.addCase(getUserPosts.fulfilled, (state, action) => {
+      state.data = state.data.concat(action.payload);
+    });
+    builder.addCase(getUserPosts.rejected, (state, action) => {
       state.error = {
         title: "Cannot load data from API",
         description: "Please try again later",
