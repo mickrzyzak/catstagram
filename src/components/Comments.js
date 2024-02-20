@@ -49,6 +49,7 @@ function Comments({ postId, comments }) {
             focusBorderColor="red.600"
             minLength="1"
             maxLength="100"
+            id={`comment-input-${postId}`}
             value={comment}
             ref={commentInput}
             onChange={(e) => setComment(e.target.value)}
