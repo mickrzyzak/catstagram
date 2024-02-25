@@ -1,5 +1,7 @@
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, Outlet, useLocation } from "react-router-dom";
+import { getUser, setAccount } from "../features/usersSlice";
 import Navbar from "./Navbar";
 import Home from "./Home";
 import Profile from "./Profile";
@@ -19,7 +21,18 @@ function Layout() {
 }
 
 function App() {
+  const dispatch = useDispatch();
+  const account = useSelector((state) => state.users.account);
   const { pathname } = useLocation();
+
+  // Get initial account
+  useEffect(() => {
+    if (account) return;
+
+    const randomAccountId = Math.floor(Math.random() * 100) + 1;
+    dispatch(getUser(randomAccountId));
+    dispatch(setAccount(randomAccountId));
+  }, [dispatch, account]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

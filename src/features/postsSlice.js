@@ -92,8 +92,20 @@ export const postsSlice = createSlice({
         id: Date.now(),
         body: action.payload.content,
         postId: action.payload.postId,
-        user: { username: "You" },
+        user: {
+          id: action.payload.userId,
+          username: action.payload.username,
+        },
       });
+    },
+    removeComment(state, action) {
+      let post = state.data.find((post) => post.id === action.payload.postId);
+      post.comments = post.comments.filter(
+        (comment, index) => index !== action.payload.commentId
+      );
+    },
+    resetReactions(state, action) {
+      state.data.forEach((post) => (post.reacted = false));
     },
   },
   extraReducers: (builder) => {
@@ -132,6 +144,12 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { addReaction, removeReaction, addComment } = postsSlice.actions;
+export const {
+  addReaction,
+  removeReaction,
+  addComment,
+  removeComment,
+  resetReactions,
+} = postsSlice.actions;
 
 export default postsSlice.reducer;
