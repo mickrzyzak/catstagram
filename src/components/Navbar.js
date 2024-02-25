@@ -44,7 +44,7 @@ function Navbar() {
     >
       <Container maxW="container.md" px={[3, 5]}>
         <Stack direction="row" justifyContent="space-between">
-          <NavLink to="/" _hover={{ textDecoration: "none" }}>
+          <NavLink to="/">
             <Heading fontSize="2xl" as="h1" color="red.600">
               <Icon as={FaCat} color="red.600" mr="2" />
               Cats
@@ -63,12 +63,16 @@ function Navbar() {
               Your account
             </MenuButton>
             <MenuList>
-              <MenuItem icon={<AtSignIcon mb="2px" boxSize="4" />}>
-                Go to my profile
-              </MenuItem>
-              <MenuItem icon={<RepeatIcon mb="2px" boxSize="4" />}>
-                Change account
-              </MenuItem>
+              <NavLink to="/my-account">
+                <MenuItem icon={<AtSignIcon mb="2px" boxSize="4" />}>
+                  Go to my profile
+                </MenuItem>
+              </NavLink>
+              <NavLink to="/change-account">
+                <MenuItem icon={<RepeatIcon mb="2px" boxSize="4" />}>
+                  Change account
+                </MenuItem>
+              </NavLink>
             </MenuList>
           </Menu>
         </Stack>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getPosts } from "../features/postsSlice";
-import { Box, Stack, Button } from "@chakra-ui/react";
+import { Box, Stack, Button, Text } from "@chakra-ui/react";
 import Alert from "./Alert";
 import Post from "./Post";
 import NavLink from "./NavLink";
@@ -109,6 +109,20 @@ function Posts({ userId }) {
           />
         ))}
       </Stack>
+      {postsToDisplay.length === 0 && (
+        <Box
+          bg="white"
+          boxShadow="base"
+          borderRadius={["none", "md"]}
+          p={[3, 5]}
+          fontSize="sm"
+          textAlign="center"
+        >
+          <Text fontSize="md" as="b">
+            No posts found
+          </Text>
+        </Box>
+      )}
       <Box px={[3, 0]} mt={[5, 12]}>
         {userId ? (
           <NavLink to="/">

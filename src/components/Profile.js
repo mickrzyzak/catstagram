@@ -82,7 +82,8 @@ function Profile() {
           p={[3, 5]}
         >
           <Flex
-            gap={["3", "4", "12"]}
+            columnGap={["0", "0", "12"]}
+            rowGap={["3", "4"]}
             alignItems="center"
             flexWrap="wrap"
             flexDirection={["column", "column", "row"]}
