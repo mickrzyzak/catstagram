@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUser } from "../features/usersSlice";
-import { getPhotos } from "../features/photosSlice";
+import { addPhoto, getPhotos } from "../features/photosSlice";
 
 const url = "https://dummyjson.com/posts";
 
@@ -67,6 +67,21 @@ export const getComments = createAsyncThunk(
   }
 );
 
+export const addPost = createAsyncThunk(
+  "posts/addPost",
+  async (post, thunkAPI) => {
+    thunkAPI.dispatch(
+      addPhoto({
+        id: `user-post-${Math.abs(post.id)}`,
+        url: `/img/${post.photo}.jpg`,
+        postId: post.id,
+      })
+    );
+
+    return post;
+  }
+);
+
 const initialState = {
   data: [],
   count: 0,
@@ -85,6 +100,10 @@ export const postsSlice = createSlice({
       let post = state.data.find((post) => post.id === action.payload);
       post.reactions--;
       post.reacted = false;
+    },
+    simulateReaction(state, action) {
+      let post = state.data.find((post) => post.id === action.payload);
+      post.reactions++;
     },
     addComment(state, action) {
       let post = state.data.find((post) => post.id === action.payload.postId);
@@ -141,12 +160,17 @@ export const postsSlice = createSlice({
         description: "Please try again later",
       };
     });
+    // Add post
+    builder.addCase(addPost.fulfilled, (state, action) => {
+      state.data.push(action.payload);
+    });
   },
 });
 
 export const {
   addReaction,
   removeReaction,
+  simulateReaction,
   addComment,
   removeComment,
   resetReactions,

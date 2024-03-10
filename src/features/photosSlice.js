@@ -36,7 +36,11 @@ const initialState = {
 export const photosSlice = createSlice({
   name: "photos",
   initialState,
-  reducers: {},
+  reducers: {
+    addPhoto(state, action) {
+      state.data.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getPhotos.fulfilled, (state, action) => {
       if (action.payload === null) return;
@@ -51,6 +55,6 @@ export const photosSlice = createSlice({
   },
 });
 
-//export const {} = photosSlice.actions;
+export const { addPhoto } = photosSlice.actions;
 
 export default photosSlice.reducer;

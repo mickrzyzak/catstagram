@@ -51,6 +51,7 @@ function Posts({ userId }) {
     if (userId) {
       posts.data
         .filter((post) => post.userId === userId)
+        .sort((a, b) => a.id - b.id)
         .forEach((post) =>
           postsTemp.push({
             post,
@@ -59,6 +60,18 @@ function Posts({ userId }) {
           })
         );
     } else {
+      // Manually added posts
+      posts.data
+        .filter((post) => post.id < 0)
+        .sort((a, b) => a.id - b.id)
+        .forEach((post) =>
+          postsTemp.push({
+            post,
+            user: users.data.find((user) => user.id === post?.userId),
+            photo: photos.data.find((photo) => photo.postId === post?.id),
+          })
+        );
+      // Posts from API
       for (let i = 1; i <= posts.count; i++) {
         let post = posts.data.find((post) => post.id === i);
         postsTemp.push({
@@ -69,7 +82,7 @@ function Posts({ userId }) {
       }
     }
     setPostsToDisplay(postsTemp);
-  }, [posts.count, posts.data, users.data, photos.data, userId]);
+  }, [posts.count, posts.data, users.data, users.account, photos.data, userId]);
 
   // Turn off loading status
   useEffect(() => {

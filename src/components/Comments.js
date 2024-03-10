@@ -74,9 +74,7 @@ function Comments({ postId, comments }) {
           </InputLeftElement>
           <Input
             placeholder="Add a comment"
-            size="md"
             variant="filled"
-            focusBorderColor="red.600"
             minLength="1"
             maxLength="100"
             autoComplete="off"
