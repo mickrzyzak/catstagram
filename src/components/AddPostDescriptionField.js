@@ -8,19 +8,18 @@ import {
 import { FormContext } from "./AddPost";
 
 function DescriptionField() {
-  const {
-    description,
-    setDescription,
-    descriptionValid,
-    setDescriptionValid,
-    formValid,
-  } = useContext(FormContext);
+  const { formState, formDispatch } = useContext(FormContext);
+  const { formValid, description, descriptionValid } = formState;
 
-  const handleDescriptionChange = (e) => setDescription(e.target.value);
+  const handleDescriptionChange = (e) =>
+    formDispatch({ type: "setDescription", payload: e.target.value });
 
   useEffect(() => {
-    setDescriptionValid(description.length >= 3);
-  }, [description, setDescriptionValid]);
+    formDispatch({
+      type: "setDescriptionValid",
+      payload: description.length >= 3,
+    });
+  }, [description, formDispatch]);
 
   return (
     <FormControl

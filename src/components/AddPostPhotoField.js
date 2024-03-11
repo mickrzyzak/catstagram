@@ -12,14 +12,15 @@ import { CheckCircleIcon } from "@chakra-ui/icons";
 import { FormContext } from "./AddPost";
 
 function PhotoField() {
-  const { photo, setPhoto, photoValid, setPhotoValid, formValid } =
-    useContext(FormContext);
+  const { formState, formDispatch } = useContext(FormContext);
+  const { formValid, photo, photoValid } = formState;
 
-  const handlePhotoClick = (photo) => setPhoto(photo);
+  const handlePhotoClick = (photo) =>
+    formDispatch({ type: "setPhoto", payload: photo });
 
   useEffect(() => {
-    setPhotoValid(photo !== null);
-  }, [photo, setPhotoValid]);
+    formDispatch({ type: "setPhotoValid", payload: photo !== null });
+  }, [photo, formDispatch]);
 
   return (
     <FormControl isInvalid={!photoValid && formValid} isRequired={true} mb="4">

@@ -9,20 +9,24 @@ import {
 import { FormContext } from "./AddPost";
 
 function TagField() {
-  const { tags, setTags, tagsValid, setTagsValid, formValid } =
-    useContext(FormContext);
+  const { formState, formDispatch } = useContext(FormContext);
+  const { formValid, tags, tagsValid } = formState;
 
   const handleTagsChange = (name) =>
-    setTags(
-      tags.map((tag) =>
+    formDispatch({
+      type: "setTags",
+      payload: tags.map((tag) =>
         name === tag.name ? { name: tag.name, checked: !tag.checked } : tag
-      )
-    );
+      ),
+    });
 
   useEffect(() => {
     const checkedTags = tags.filter((tag) => tag.checked).length;
-    setTagsValid(checkedTags >= 1 && checkedTags <= 3);
-  }, [tags, setTagsValid]);
+    formDispatch({
+      type: "setTagsValid",
+      payload: checkedTags >= 1 && checkedTags <= 3,
+    });
+  }, [tags, formDispatch]);
 
   return (
     <FormControl isInvalid={!tagsValid && formValid} isRequired={true} mb="4">
