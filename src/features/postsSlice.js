@@ -69,11 +69,11 @@ export const getComments = createAsyncThunk(
 
 export const addPost = createAsyncThunk(
   "posts/addPost",
-  async (post, thunkAPI) => {
+  async ({ post, photo }, thunkAPI) => {
     thunkAPI.dispatch(
       addPhoto({
         id: `user-post-${Math.abs(post.id)}`,
-        url: `/img/${post.photo}.jpg`,
+        url: photo,
         postId: post.id,
       })
     );

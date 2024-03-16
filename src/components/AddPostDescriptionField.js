@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { FormContext } from "./AddPost";
 
-function DescriptionField() {
+function AddPostDescriptionField() {
   const { formState, formDispatch } = useContext(FormContext);
   const { formValid, description, descriptionValid } = formState;
 
@@ -34,7 +34,7 @@ function DescriptionField() {
         variant="filled"
         rows="4"
         minLength="3"
-        maxLength="100"
+        maxLength="1000"
         autoComplete="off"
         value={description}
         onChange={handleDescriptionChange}
@@ -46,4 +46,4 @@ function DescriptionField() {
   );
 }
 
-export default DescriptionField;
+export default AddPostDescriptionField;

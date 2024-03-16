@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { FormContext } from "./AddPost";
 
-function TagField() {
+function AddPostTagField() {
   const { formState, formDispatch } = useContext(FormContext);
   const { formValid, tags, tagsValid } = formState;
 
@@ -56,4 +56,4 @@ function TagField() {
   );
 }
 
-export default TagField;
+export default AddPostTagField;

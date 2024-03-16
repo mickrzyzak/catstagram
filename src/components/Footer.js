@@ -1,12 +1,5 @@
-import { Container, Box, Text, Link } from "@chakra-ui/react";
-
-function FooterText({ children }) {
-  return (
-    <Text fontSize={["sm", "md"]} color="gray.600">
-      {children}
-    </Text>
-  );
-}
+import { Container, Box, Link } from "@chakra-ui/react";
+import Text from "./FooterText";
 
 function Footer() {
   return (
@@ -24,7 +17,7 @@ function Footer() {
       boxShadow="base"
     >
       <Container maxW="container.md" textAlign={["center", "left"]} px={[3, 5]}>
-        <FooterText>
+        <Text>
           Application created by{" "}
           <Link
             href="https://github.com/mickrzyzak/catstagram"
@@ -34,8 +27,8 @@ function Footer() {
             mickrzyzak on GitHub
           </Link>
           .
-        </FooterText>
-        <FooterText>
+        </Text>
+        <Text>
           Post and user data comes from{" "}
           <Link
             href="https://dummyjson.com"
@@ -46,8 +39,8 @@ function Footer() {
             DummyJSON
           </Link>
           .
-        </FooterText>
-        <FooterText>
+        </Text>
+        <Text>
           Cat photos come from{" "}
           <Link
             href="https://thecatapi.com"
@@ -58,7 +51,7 @@ function Footer() {
             The Cat API
           </Link>
           .
-        </FooterText>
+        </Text>
       </Container>
     </Box>
   );

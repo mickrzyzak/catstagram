@@ -1,22 +1,20 @@
-import { useContext, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
+  AbsoluteCenter,
   Box,
-  Icon,
-  Image,
-  Stack,
+  Divider,
   FormControl,
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { CheckCircleIcon } from "@chakra-ui/icons";
 import { FormContext } from "./AddPost";
+import Select from "./AddPostPhotoFieldSelect";
+import Add from "./AddPostPhotoFieldAdd";
 
-function PhotoField() {
+function AddPostPhotoField() {
   const { formState, formDispatch } = useContext(FormContext);
   const { formValid, photo, photoValid } = formState;
-
-  const handlePhotoClick = (photo) =>
-    formDispatch({ type: "setPhoto", payload: photo });
+  const [preview, setPreview] = useState(false);
 
   useEffect(() => {
     formDispatch({ type: "setPhotoValid", payload: photo !== null });
@@ -25,47 +23,28 @@ function PhotoField() {
   return (
     <FormControl isInvalid={!photoValid && formValid} isRequired={true} mb="4">
       <FormLabel as="legend">Photo</FormLabel>
-      <Stack
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
-        {["Cat_1", "Cat_2", "Cat_3"].map((name) => (
-          <Box position="relative" key={name}>
-            <Image
-              src={`/img/${name}.jpg`}
-              alt={name}
-              borderRadius="sm"
-              cursor="pointer"
-              draggable="false"
-              borderWidth="2px"
-              borderStyle="solid"
-              borderColor={
-                photo === name || (!photoValid && formValid)
-                  ? "red.600"
-                  : "gray.100"
-              }
-              onClick={() => handlePhotoClick(name)}
-            />
-            {photo === name && (
-              <Icon
-                as={CheckCircleIcon}
-                position="absolute"
-                top={[".25rem", ".5rem"]}
-                left={[".25rem", ".5rem"]}
-                backgroundColor="gray.100"
-                borderRadius="full"
-                border="1px solid"
-                borderColor="gray.100"
-                color="red.600"
-              />
-            )}
+      {!preview && (
+        <>
+          <Select formState={formState} formDispatch={formDispatch} />
+          <Box position="relative" my={[5, 7]}>
+            <Divider />
+            <AbsoluteCenter bg="white" color="gray.600" px="4">
+              OR
+            </AbsoluteCenter>
           </Box>
-        ))}
-      </Stack>
-      <FormErrorMessage>Photo is required. Select a photo.</FormErrorMessage>
+        </>
+      )}
+      <Add
+        formState={formState}
+        formDispatch={formDispatch}
+        preview={preview}
+        setPreview={setPreview}
+      />
+      <FormErrorMessage>
+        Photo is required. Select a photo or add your own.
+      </FormErrorMessage>
     </FormControl>
   );
 }
 
-export default PhotoField;
+export default AddPostPhotoField;

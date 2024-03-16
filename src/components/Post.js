@@ -1,6 +1,6 @@
 import { Card, Divider, SkeletonText } from "@chakra-ui/react";
-import PostHeader from "./PostHeader";
-import PostBody from "./PostBody";
+import Header from "./PostHeader";
+import Body from "./PostBody";
 
 function Post({ post, user, photo }) {
   if (!post || !user || !photo)
@@ -10,9 +10,9 @@ function Post({ post, user, photo }) {
 
   return (
     <Card variant="elevated" boxShadow="base" borderRadius={["none", "md"]}>
-      <PostHeader user={user} />
+      <Header user={user} />
       <Divider color="red.600" variant="dashed" />
-      <PostBody post={post} photo={photo} />
+      <Body post={post} photo={photo} />
     </Card>
   );
 }

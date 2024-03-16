@@ -1,64 +1,11 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Avatar, Box, Container, Flex, Text, Heading } from "@chakra-ui/react";
+import { Avatar, Box, Container, Flex } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { getUserPosts } from "../features/postsSlice";
 import Posts from "./Posts";
-
-function ProfileText({ name, value }) {
-  return (
-    <Text fontSize="sm">
-      <Text as="span" color="gray.600">
-        {name}:
-      </Text>
-      {` ${value}`}
-    </Text>
-  );
-}
-
-function ProfileData({ user }) {
-  return (
-    <Box textAlign={["center", "left"]}>
-      <Heading size={["md", "sm"]} mb="1" color="red.600">
-        {user.firstName + " " + user.lastName}
-      </Heading>
-      <ProfileText name="Username" value={user.username} />
-      <ProfileText name="E-mail" value={user.email} />
-      <ProfileText name="Phone" value={user.phone} />
-    </Box>
-  );
-}
-
-function ProfileStatistics({ user, posts }) {
-  return (
-    <Box textAlign={["center", "left"]}>
-      <Heading size={["md", "sm"]} mb="1" color="red.600">
-        Statistics
-      </Heading>
-      <Flex columnGap="4" flexDirection={["row", "column"]}>
-        <ProfileText
-          name="Likes"
-          value={posts.data
-            .filter((post) => post.userId === user.id)
-            .reduce((sum, post) => sum + post.reactions, 0)}
-        />
-        <ProfileText
-          name="Posts"
-          value={posts.data.filter((post) => post.userId === user.id)?.length}
-        />
-        <ProfileText
-          name="Comments"
-          value={posts.data
-            .filter((post) => post.userId === user.id)
-            .reduce(
-              (sum, post) => sum + (post.comments ? post.comments.length : 0),
-              0
-            )}
-        />
-      </Flex>
-    </Box>
-  );
-}
+import Statistics from "./ProfileStatistics";
+import Data from "./ProfileData";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -103,8 +50,8 @@ function Profile() {
               alignItems="center"
               flexDirection={["column", "row"]}
             >
-              <ProfileData user={user} />
-              <ProfileStatistics user={user} posts={posts} />
+              <Data user={user} />
+              <Statistics user={user} posts={posts} />
             </Flex>
           </Flex>
         </Box>

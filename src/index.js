@@ -2,28 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./components/App";
 import "./index.css";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from "./theme";
 import { store } from "./store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-
-const theme = extendTheme({
-  styles: {
-    global: () => ({
-      body: {
-        position: "relative",
-        bg: "gray.100",
-        bgGradient: ["none", "linear(to-r, gray.200, gray.100)"],
-        margin: "0",
-        paddingTop: ["66px", "73px"],
-        paddingBottom: ["96px", "113px"],
-        minW: "320px",
-        minH: "100vh",
-        overflowY: "scroll",
-      },
-    }),
-  },
-});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

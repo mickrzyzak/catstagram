@@ -1,29 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getPosts } from "../features/postsSlice";
-import { Box, Stack, Button, Text } from "@chakra-ui/react";
+import { Box, Stack, Text } from "@chakra-ui/react";
 import Alert from "./Alert";
 import Post from "./Post";
+import ActionButton from "./PostsActionButton";
 import NavLink from "./NavLink";
-
-function ActionButton({ children, action, loading }) {
-  return (
-    <Button
-      colorScheme="red"
-      size="md"
-      w="100%"
-      variant="outline"
-      bgColor="white"
-      boxShadow="base"
-      loadingText="Loading"
-      spinnerPlacement="start"
-      isLoading={loading}
-      onClick={action}
-    >
-      {children}
-    </Button>
-  );
-}
 
 function Posts({ userId }) {
   const dispatch = useDispatch();

@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { addPost, simulateReaction } from "../features/postsSlice";
 import { Box } from "@chakra-ui/react";
 import formReducer from "../reducers/formReducer";
-import AddPostButton from "./AddPostButton";
-import AddPostForm from "./AddPostForm";
-import AddPostPublishing from "./AddPostPublishing";
+import Start from "./AddPostStart";
+import Form from "./AddPostForm";
+import Publishing from "./AddPostPublishing";
 
 export const FormContext = createContext(null);
 
@@ -45,14 +45,16 @@ function AddPost() {
     const postId = (posts.data.filter((post) => post.id <= 0).length + 1) * -1;
     dispatch(
       addPost({
-        id: postId,
-        body: formState.description,
-        userId: users.account,
-        tags: formState.tags
-          .filter((tag) => tag.checked)
-          .map((tag) => tag.name),
-        reactions: 0,
-        comments: [],
+        post: {
+          id: postId,
+          body: formState.description,
+          userId: users.account,
+          tags: formState.tags
+            .filter((tag) => tag.checked)
+            .map((tag) => tag.name),
+          reactions: 0,
+          comments: [],
+        },
         photo: formState.photo,
       })
     );
@@ -85,15 +87,12 @@ function AddPost() {
         p={[3, 5]}
         my={[5, 12]}
       >
-        {status === "start" && <AddPostButton handleStart={handleStart} />}
+        {status === "start" && <Start handleStart={handleStart} />}
         {status === "form" && (
-          <AddPostForm
-            handlePublish={handlePublish}
-            handleCancel={handleCancel}
-          />
+          <Form handlePublish={handlePublish} handleCancel={handleCancel} />
         )}
         {status === "publishing" && (
-          <AddPostPublishing handlePublished={handlePublished} />
+          <Publishing handlePublished={handlePublished} />
         )}
       </Box>
     </FormContext.Provider>

@@ -1,7 +1,7 @@
 import { Box, Text, Icon } from "@chakra-ui/react";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 
-function AddPostButton({ handleStart }) {
+function AddPostStart({ handleStart }) {
   return (
     <Box textAlign="center" cursor="pointer" onClick={handleStart}>
       <Icon as={MdOutlineAddAPhoto} boxSize="10" color="red.600" />
@@ -18,4 +18,4 @@ function AddPostButton({ handleStart }) {
   );
 }
 
-export default AddPostButton;
+export default AddPostStart;
