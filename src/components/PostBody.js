@@ -58,6 +58,7 @@ function PostBody({ post, photo }) {
       <Image
         w="100%"
         maxH="50vh"
+        minH="300px"
         objectFit="cover"
         fallback={
           <AspectRatio ratio={16 / 9}>

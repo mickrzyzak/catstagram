@@ -38,6 +38,7 @@ function AddPostPhotoFieldAdd({
             alt="photo-preview"
             w="100%"
             maxH="50vh"
+            minH="300px"
             objectFit="cover"
             borderRadius="sm"
           />
