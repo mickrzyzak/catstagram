@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/catstagram/static/css/main.ce7c5c5d.css",
-    "main.js": "/catstagram/static/js/main.3e851fe3.js",
+    "main.js": "/catstagram/static/js/main.bc5577da.js",
     "index.html": "/catstagram/index.html",
     "main.ce7c5c5d.css.map": "/catstagram/static/css/main.ce7c5c5d.css.map",
-    "main.3e851fe3.js.map": "/catstagram/static/js/main.3e851fe3.js.map"
+    "main.bc5577da.js.map": "/catstagram/static/js/main.bc5577da.js.map"
   },
   "entrypoints": [
     "static/css/main.ce7c5c5d.css",
-    "static/js/main.3e851fe3.js"
+    "static/js/main.bc5577da.js"
   ]
 }
