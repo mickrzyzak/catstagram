@@ -1,4 +1,4 @@
-# 🐈‍⬛ Catstagram
+# 🐈 Catstagram
 
 **Catstagram** is a responsive web application inspired by Instagram, but with cats. User and post data come from [**DummyJSON**](https://dummyjson.com), and cat photos come from [**The Cat API**](https://thecatapi.com). Application consists of a home page and user profile pages. Users can interact through likes and comments, as well as publish their own posts.
 
@@ -22,7 +22,7 @@ Application is made in **React** with **Redux Toolkit** and **Chakra UI**. The p
 - Simulating likes
 - Account change
 
-## 🏗️ Technologies
+## 🧱 Technologies
 
 - [React](https://github.com/facebook/react) 18.2.0
 - [React Router](https://github.com/remix-run/react-router) 6.21.0
