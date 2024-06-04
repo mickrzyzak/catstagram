@@ -12,7 +12,7 @@ function ProfileStatistics({ user, posts }) {
           name="Likes"
           value={posts.data
             .filter((post) => post.userId === user.id)
-            .reduce((sum, post) => sum + post.reactions, 0)}
+            .reduce((sum, post) => sum + post.reactions.likes, 0)}
         />
         <Text
           name="Posts"

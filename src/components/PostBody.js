@@ -97,7 +97,7 @@ function PostBody({ post, photo }) {
           isActive={true}
           onClick={handleReaction}
         >
-          {post.reactions}
+          {post.reactions.likes}
         </Button>
         <Button
           leftIcon={<ChatIcon mb="0.5" />}

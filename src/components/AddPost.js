@@ -52,7 +52,7 @@ function AddPost() {
           tags: formState.tags
             .filter((tag) => tag.checked)
             .map((tag) => tag.name),
-          reactions: 0,
+          reactions: { likes: 0, dislikes: 0 },
           comments: [],
         },
         photo: formState.photo,

@@ -93,17 +93,17 @@ export const postsSlice = createSlice({
   reducers: {
     addReaction(state, action) {
       let post = state.data.find((post) => post.id === action.payload);
-      post.reactions++;
+      post.reactions.likes++;
       post.reacted = true;
     },
     removeReaction(state, action) {
       let post = state.data.find((post) => post.id === action.payload);
-      post.reactions--;
+      post.reactions.likes--;
       post.reacted = false;
     },
     simulateReaction(state, action) {
       let post = state.data.find((post) => post.id === action.payload);
-      post.reactions++;
+      post.reactions.likes++;
     },
     addComment(state, action) {
       let post = state.data.find((post) => post.id === action.payload.postId);
